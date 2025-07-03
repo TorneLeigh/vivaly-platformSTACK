@@ -17,7 +17,7 @@ const app = express();
 
 if (process.env.SENTRY_DSN) {
   Sentry.init({ dsn: process.env.SENTRY_DSN });
-  app.use(Sentry.middleware.requestHandler());
+  app.use(Sentry.handlers.requestHandler());
 }
 
 app.set("trust proxy", 1);
@@ -59,7 +59,7 @@ serveStatic(app);
 startPaymentReleaseCron();
 
 if (process.env.SENTRY_DSN) {
-  app.use(Sentry.middleware.errorHandler());
+  app.use(Sentry.handlers.errorHandler());
 }
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
