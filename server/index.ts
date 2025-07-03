@@ -17,7 +17,8 @@ const app = express();
 
 if (process.env.SENTRY_DSN) {
   Sentry.init({ dsn: process.env.SENTRY_DSN });
-  app.use(Sentry.Handlers.requestHandler());
+  // Sentry.Handlers.requestHandler() and errorHandler() are not available in Sentry v8+
+  // Just initializing Sentry is enough here.
 }
 
 app.set("trust proxy", 1);
@@ -57,10 +58,6 @@ app.use(
 registerRoutes(app);
 serveStatic(app);
 startPaymentReleaseCron();
-
-if (process.env.SENTRY_DSN) {
-  app.use(Sentry.Handlers.errorHandler());
-}
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error("Unexpected server error:", err);
