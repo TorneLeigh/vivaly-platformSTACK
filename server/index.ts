@@ -1,5 +1,5 @@
-import express, { Request, Response, NextFunction } from "express";
-import session from "express-session";
+import * as Sentry from '@sentry/node';
+import * as SentryExpress from '@sentry/node/express';
 import connectPg from "connect-pg-simple";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
