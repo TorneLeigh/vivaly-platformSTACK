@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import rateLimit from "express-rate-limit";
 import cors from "cors";
 import * as Sentry from "@sentry/node";
+import * as SentryExpress from "@sentry/express";
 import "@sentry/tracing";
 
 import { registerRoutes } from "./routes";
@@ -18,7 +19,7 @@ const app = express();
 
 if (process.env.SENTRY_DSN) {
   Sentry.init({ dsn: process.env.SENTRY_DSN });
-  app.use(Sentry.requestHandler());
+  app.use(SentryExpress.requestHandler());
 }
 
 app.set("trust proxy", 1);
@@ -59,7 +60,10 @@ registerRoutes(app);
 serveStatic(app);
 startPaymentReleaseCron();
 
-app.use(Sentry.errorHandler());
+if (process.env.SENTRY_DSN) {
+  app.use(SentryExpress.errorHandler());
+}
+
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error("Unexpected server error:", err);
   res.status(500).json({ error: "Internal Server Error" });
