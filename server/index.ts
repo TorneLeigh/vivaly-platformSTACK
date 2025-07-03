@@ -6,7 +6,7 @@ import cookieParser from "cookie-parser";
 import rateLimit from "express-rate-limit";
 import cors from "cors";
 import * as Sentry from "@sentry/node";
-import * as SentryExpress from "@sentry/express";
+import * as SentryExpress from "@sentry/node/express";
 import "@sentry/tracing";
 
 import { registerRoutes } from "./routes";
