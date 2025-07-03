@@ -17,8 +17,7 @@ const app = express();
 
 if (process.env.SENTRY_DSN) {
   Sentry.init({ dsn: process.env.SENTRY_DSN });
-  // Sentry.Handlers.requestHandler() and errorHandler() are not available in Sentry v8+
-  // Just initializing Sentry is enough here.
+  // Removed Sentry.Handlers.requestHandler() and errorHandler() as they're not in Sentry v8+
 }
 
 app.set("trust proxy", 1);
