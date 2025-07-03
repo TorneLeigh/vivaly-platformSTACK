@@ -1,2 +1,3 @@
-// server/cron-jobs.ts
-export {};
+export function startPaymentReleaseCron() {
+  console.log("Cron job placeholder");
+}
