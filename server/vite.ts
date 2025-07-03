@@ -1,0 +1,2 @@
+// server/vite.ts
+export {};
