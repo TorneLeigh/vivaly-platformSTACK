@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import rateLimit from "express-rate-limit";
 import cors from "cors";
 import * as Sentry from "@sentry/node";
+import * as SentryExpress from "@sentry/express";
 import "@sentry/tracing";
 
 import { registerRoutes } from "./routes";
@@ -17,7 +18,7 @@ const app = express();
 
 if (process.env.SENTRY_DSN) {
   Sentry.init({ dsn: process.env.SENTRY_DSN });
-  app.use(Sentry.Handlers.requestHandler());
+  app.use(SentryExpress.requestHandler());
 }
 
 app.set("trust proxy", 1);
@@ -59,7 +60,7 @@ serveStatic(app);
 startPaymentReleaseCron();
 
 if (process.env.SENTRY_DSN) {
-  app.use(Sentry.Handlers.errorHandler());
+  app.use(SentryExpress.errorHandler());
 }
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
